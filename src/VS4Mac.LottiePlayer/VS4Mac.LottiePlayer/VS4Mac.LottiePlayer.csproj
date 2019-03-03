@@ -1,8 +1,39 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net471</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MonoDevelop.Addins" Version="0.4.4" />
+    <PackageReference Include="MonoDevelop.Addins" Version="0.4.7" />
   </ItemGroup>
+    <ItemGroup>
+    <Reference Include="Xamarin.Mac" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Remove="Controls\LottiePreviewer.xaml" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Controls\" />
+      <Folder Include="Controls\Lottie\" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="Controls\Lottie\LottiePlayer.html" />
+      <None Remove="Controls\Lottie\bodymovin.js" />
+      <None Remove="Controls\Lottie\styles.scss" />
+      <None Remove="Controls\Lottie\lottie.js" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Controls\Lottie\LottiePlayer.html">
+        <LogicalName>LottiePlayer</LogicalName>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Controls\Lottie\styles.scss">
+        <LogicalName>Styles</LogicalName>
+      </EmbeddedResource>
+    </ItemGroup>
 </Project>

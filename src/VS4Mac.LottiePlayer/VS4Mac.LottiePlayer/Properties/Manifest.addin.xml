@@ -1,5 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ExtensionModel>
-    <Runtime>
-    </Runtime>
-</ExtensionModel>
+<Addin
+    id = "MonoDevelop.LottiePlayer">
+    <Header>
+        <Name>Lottie Player Addin</Name>
+        <Author>Javier Suárez Ruiz</Author>
+        <Copyright>Javier Suárez Ruiz</Copyright>
+        <Url>https://github.com/jsuarezruiz/VSMac-LottiePlayer</Url>
+    </Header>
+    <Extension 
+        path="/MonoDevelop/Ide/Commands">
+        <Command 
+            id="LottiePlayer.Commands.OpenLottiePlayerCommand" 
+            _label="Preview in Lottie Player..." 
+            defaultHandler="VS4Mac.LottiePlayer.Commands.OpenLottiePlayerCommand" />
+    </Extension>   
+    <Extension 
+        path="/MonoDevelop/Ide/ContextMenu/ProjectPad">
+        <CommandItem 
+            id="LottiePlayer.Commands.OpenLottiePlayerCommand" />        
+    </Extension>
+</Addin>

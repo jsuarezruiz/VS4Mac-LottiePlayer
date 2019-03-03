@@ -1,13 +1,20 @@
-﻿using Mono.Addins;
+﻿using System;
+using System.Runtime.InteropServices;
+using Mono.Addins;
 using Mono.Addins.Description;
 
 [assembly: Addin(
-    "VS4Mac.LottiePlayer",
-    Namespace = "VS4Mac.LottiePlayer",
-    Version = "0.1"
+    "LottiePlayer",
+    Namespace = "MonoDevelop",
+    Version = "0.1", 
+	Category = "IDE extensions"
 )]
 
-[assembly: AddinName("VS4Mac.LottiePlayer")]
+[assembly: AddinName("Lottie player")]
 [assembly: AddinCategory("IDE extensions")]
-[assembly: AddinDescription("VS4Mac.LottiePlayer")]
+[assembly: AddinDescription("Visual Studio for macOS addin to Preview Lottie json files.")]
 [assembly: AddinAuthor("Javier Suárez Ruiz")]
+[assembly: AddinUrl("https://github.com/jsuarezruiz/VS4Mac-LottiePlayer")]
+
+[assembly: CLSCompliant(false)]
+[assembly: ComVisible(false)]
