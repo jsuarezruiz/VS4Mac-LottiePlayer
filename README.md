@@ -1,6 +1,6 @@
 # VS4Mac Lottie Player
 
-**Lottie Player Helper** is a Visual Studio for macOS addin to Preview  Lottie json files.
+**Lottie Player** is a Visual Studio for macOS addin to Preview  Lottie json files.
 
 ## Copyright and license
 
