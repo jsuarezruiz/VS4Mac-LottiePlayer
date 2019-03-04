@@ -32,6 +32,16 @@ namespace VS4Mac.LottiePlayer.Controls
 			}
 		}
 
+		public void Play()
+		{
+			EvaluateJavaScript($"lottie.play();", null);
+		}
+
+		public void Pause()
+		{
+			EvaluateJavaScript($"lottie.pause();", null);
+		}
+
 		static string CreateHtml(string data)
 		{
 			return LoadStringFromResource(HTML_RESOURCE)

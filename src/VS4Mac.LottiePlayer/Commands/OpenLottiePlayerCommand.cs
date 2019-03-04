@@ -1,6 +1,7 @@
 ﻿using MonoDevelop.Components.Commands;
 using MonoDevelop.Ide;
 using MonoDevelop.Projects;
+using VS4Mac.LottiePlayer.Controllers;
 using VS4Mac.LottiePlayer.Helpers;
 using VS4Mac.LottiePlayer.Views;
 
@@ -12,10 +13,10 @@ namespace VS4Mac.LottiePlayer.Commands
         {
 			var projectFile = IdeApp.ProjectOperations.CurrentSelectedItem as ProjectFile;
 
-			using (var lottiePlayerDialog = new LottiePlayerDialog(projectFile))
-			{
+			var lottiePlayerDialog = new LottiePlayerDialog();
+			var lottiePlayerController = new LottiePlayerController(lottiePlayerDialog, projectFile);
 				lottiePlayerDialog.Run(Xwt.MessageDialog.RootWindow);
-			}
+			
 		}
 
 		protected override void Update(CommandInfo info)

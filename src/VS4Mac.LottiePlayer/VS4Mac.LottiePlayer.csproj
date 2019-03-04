@@ -1,39 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="MonoDevelop.Addins" Version="0.4.7" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net471</TargetFramework>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
     <ItemGroup>
-    <Reference Include="Xamarin.Mac" />
-    <Reference Include="System.Web" />
-  </ItemGroup>
-    <ItemGroup>
-      <EmbeddedResource Remove="Controls\LottiePreviewer.xaml" />
+        <PackageReference Include="MonoDevelop.Addins" Version="0.4.7" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Controls\" />
-      <Folder Include="Controls\Lottie\" />
+        <EmbeddedResource Include="Controls\Lottie\LottiePlayer.html">
+            <LogicalName>LottiePlayer</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Controls\Lottie\styles.scss">
+            <LogicalName>Styles</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Images\pause.png">    
+            <LogicalName>pause.png</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Images\play.png">    
+            <LogicalName>play.png</LogicalName>
+        </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-      <None Remove="Controls\Lottie\LottiePlayer.html" />
-      <None Remove="Controls\Lottie\bodymovin.js" />
-      <None Remove="Controls\Lottie\styles.scss" />
-      <None Remove="Controls\Lottie\lottie.js" />
+      <None Remove="Images\pause.png" />
+      <None Remove="Images\play.png" />
     </ItemGroup>
     <ItemGroup>
-      <EmbeddedResource Include="Controls\Lottie\LottiePlayer.html">
-        <LogicalName>LottiePlayer</LogicalName>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Controls\Lottie\styles.scss">
-        <LogicalName>Styles</LogicalName>
-      </EmbeddedResource>
+      <Folder Include="Controllers\" />
+      <Folder Include="Views\Base\" />
+      <Folder Include="Controllers\Base\" />
     </ItemGroup>
 </Project>

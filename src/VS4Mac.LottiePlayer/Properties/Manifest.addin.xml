@@ -18,5 +18,10 @@
         path="/MonoDevelop/Ide/ContextMenu/ProjectPad">
         <CommandItem 
             id="LottiePlayer.Commands.OpenLottiePlayerCommand" />        
+    </Extension> 
+    <!-- StockIcons -->
+    <Extension path = "/MonoDevelop/Core/StockIcons">
+        <StockIcon stockid = "lottie-play" resource = "play.png" size="Menu" />  
+        <StockIcon stockid = "lottie-pause" resource = "pause.png" size="Menu" />  
     </Extension>
 </Addin>
