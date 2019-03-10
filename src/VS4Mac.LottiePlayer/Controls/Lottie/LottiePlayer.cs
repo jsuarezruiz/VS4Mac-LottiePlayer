@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.IO;
-using Foundation;
+using System.Threading.Tasks;
 using WebKit;
 
 namespace VS4Mac.LottiePlayer.Controls
@@ -8,6 +8,8 @@ namespace VS4Mac.LottiePlayer.Controls
 	public class LottiePlayer : ExtendedWebView, IWKNavigationDelegate
 	{
 		const string HTML_RESOURCE = "LottiePlayer";
+
+		public event EventHandler DurationChanged;
 
 		public LottiePlayer()
 		{
@@ -20,7 +22,9 @@ namespace VS4Mac.LottiePlayer.Controls
 
 		public bool Initialized { get; set; }
 
-		public void SetData(string data)
+		public double Duration { get; internal set; }
+
+		public async Task SetDataAsync(string data)
 		{
 			Animation = data;
 
@@ -28,18 +32,37 @@ namespace VS4Mac.LottiePlayer.Controls
 			{
 				var html = CreateHtml(Animation);
 				InitialNavigation = LoadHtmlString(html, null);
+				await Task.Delay(500);
+				LoadAnimationDuration();
 				return;
 			}
 		}
 
 		public void Play()
 		{
-			EvaluateJavaScript($"lottie.play();", null);
+			EvaluateJavaScript($"window.animation.play();", null);
 		}
 
 		public void Pause()
 		{
-			EvaluateJavaScript($"lottie.pause();", null);
+			EvaluateJavaScript($"window.animation.pause();", null);
+			LoadAnimationDuration();
+		}
+
+		public void GoToAndStop(double value)
+		{
+			Pause();
+			EvaluateJavaScript($"window.animation.goToAndStop({value}, true);", null);
+		}
+
+		void LoadAnimationDuration()
+		{
+			EvaluateJavaScript($"getAnimationDuration();", (result, error) =>
+			{
+				var durationString = result.ToString();
+				Duration = Convert.ToDouble(durationString);
+				DurationChanged?.Invoke(this, null);
+			});
 		}
 
 		static string CreateHtml(string data)
@@ -58,7 +81,7 @@ namespace VS4Mac.LottiePlayer.Controls
 
 	public class LottiePlayerNavigationDelegate : WKNavigationDelegate
 	{
-		public override void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
+		public override async void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
 		{
 			var lottiePlayer = webView as LottiePlayer;
 
@@ -66,7 +89,7 @@ namespace VS4Mac.LottiePlayer.Controls
 			{
 				lottiePlayer.InitialNavigation = null;
 				lottiePlayer.Initialized = true;
-				lottiePlayer.SetData(lottiePlayer.Animation);
+				await lottiePlayer.SetDataAsync(lottiePlayer.Animation);
 			}
 		}
 	}

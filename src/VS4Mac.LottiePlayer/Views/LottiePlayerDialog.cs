@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using MonoDevelop.Ide;
 using VS4Mac.LottiePlayer.Controllers;
 using VS4Mac.LottiePlayer.Controllers.Base;
@@ -18,6 +19,7 @@ namespace VS4Mac.LottiePlayer.Views
 		Controls.LottiePlayer _lottiePlayer;
 		HBox _controlBox;
 		Button _playButton;
+		Slider _timeSlider;
 		HBox _buttonBox;
 		Button _closeButton;
 
@@ -39,15 +41,24 @@ namespace VS4Mac.LottiePlayer.Views
 			};
 
 			_lottiePlayer = new Controls.LottiePlayer();
-			_controlBox = new HBox();
+
+			_controlBox = new HBox
+			{
+				Margin = new WidgetSpacing(0, 6, 0, 6)
+			};
 
 			_playButton = new Button
 			{
 				BackgroundColor = MonoDevelop.Ide.Gui.Styles.BackgroundColor,
-				HorizontalPlacement = WidgetPlacement.Center,
 				Image = ImageService.GetIcon("lottie-pause", Gtk.IconSize.Button),
 				ImagePosition = ContentPosition.Center,
 				Style = ButtonStyle.Borderless
+			};
+
+			_timeSlider = new HSlider
+			{
+				MinimumValue = 0,
+				Visible = false
 			};
 
 			_buttonBox = new HBox();
@@ -63,7 +74,8 @@ namespace VS4Mac.LottiePlayer.Views
 
 			var xwtLottiePlayer = Toolkit.CurrentEngine.WrapWidget(_lottiePlayer);
 
-			_controlBox.PackStart(_playButton, true);
+			_controlBox.PackStart(_playButton);
+			_controlBox.PackStart(_timeSlider, true);
 
 			_buttonBox.PackEnd(_closeButton);
 
@@ -79,6 +91,8 @@ namespace VS4Mac.LottiePlayer.Views
 
 		void AttachEvents()
 		{
+			_lottiePlayer.DurationChanged += OnLottiePlayerDurationChanged;
+			_timeSlider.ValueChanged += OnTimeSliderValueChanged;
 			_playButton.Clicked += OnPlayButtonClicked;  
 			_closeButton.Clicked += OnCloseButtonClicked;
 		}
@@ -87,22 +101,41 @@ namespace VS4Mac.LottiePlayer.Views
 		{
 			base.Dispose(disposing);
 
+			_lottiePlayer.DurationChanged -= OnLottiePlayerDurationChanged;
+			_timeSlider.ValueChanged -= OnTimeSliderValueChanged;
 			_playButton.Clicked -= OnPlayButtonClicked;
 			_closeButton.Clicked -= OnCloseButtonClicked;
 		}
 
-		public void SetController(IController controller)
+		public async void SetController(IController controller)
 		{
 			_controller = (LottiePlayerController)controller;
 
-			LoadAnimation(); 
+			await LoadAnimationAsync(); 
 		}
 
-		void LoadAnimation()
+		async Task LoadAnimationAsync()
 		{
 			var animationText = File.ReadAllText(_controller.ProjectFile.FilePath);
 
-			_lottiePlayer.SetData(animationText);
+			await _lottiePlayer.SetDataAsync(animationText);
+		}
+
+		void UpdateSliderData()
+		{
+			_timeSlider.MaximumValue = _lottiePlayer.Duration;
+			_timeSlider.StepIncrement = 0.1;
+		}
+
+		void OnLottiePlayerDurationChanged(object sender, System.EventArgs e)
+		{
+			UpdateSliderData();
+		}
+
+		void OnTimeSliderValueChanged(object sender, System.EventArgs e)
+		{
+			var timeValue = _timeSlider.Value;
+			_lottiePlayer.GoToAndStop(timeValue);
 		}
 
 		void OnPlayButtonClicked(object sender, System.EventArgs e)
@@ -122,12 +155,14 @@ namespace VS4Mac.LottiePlayer.Views
 		void Pause()
 		{
 			_playButton.Image = ImageService.GetIcon("lottie-pause", Gtk.IconSize.Button);
+			_timeSlider.Visible = false;
 			_lottiePlayer.Play();
 		}
 
 		void Play()
 		{
 			_playButton.Image = ImageService.GetIcon("lottie-play", Gtk.IconSize.Button);
+			_timeSlider.Visible = true;
 			_lottiePlayer.Pause();
 		}
 

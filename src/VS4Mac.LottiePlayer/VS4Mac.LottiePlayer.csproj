@@ -29,9 +29,4 @@
       <None Remove="Images\pause.png" />
       <None Remove="Images\play.png" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Controllers\" />
-      <Folder Include="Views\Base\" />
-      <Folder Include="Controllers\Base\" />
-    </ItemGroup>
 </Project>
